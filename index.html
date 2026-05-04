@@ -1,646 +1,224 @@
-<!doctype html>
-<html lang="id" class="h-full">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pengumuman Kelulusan</title>
-  <script src="/_sdk/element_sdk.js"></script>
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Playfair+Display:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
-  <style>
-  html, body { height: 100%; width: 100%; margin: 0; padding: 0; }
-  body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background: linear-gradient(135deg, #0a1628 0%, #1e3a5f 50%, #2d5282 100%);
-    overflow-x: hidden;
-  }
-  .serif { font-family: 'Playfair Display', serif; }
-  .classic { font-family: 'Cormorant Garamond', serif; }
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pengumuman Kelulusan</title>
 
-  /* Animated background */
-  .bg-pattern {
-    position: fixed;
-    inset: 0;
-    background-image:
-      radial-gradient(circle at 20% 30%, rgba(251, 191, 36, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 80% 70%, rgba(251, 191, 36, 0.06) 0%, transparent 40%);
-    pointer-events: none;
-  }
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f4f6f9;
+  text-align: center;
+}
 
-  .floating-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(60px);
-    opacity: 0.4;
-    animation: float 8s ease-in-out infinite;
-  }
-  @keyframes float {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(30px, -30px) scale(1.1); }
-  }
+.container {
+  padding: 20px;
+}
 
-  /* Confetti */
-  .confetti {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    pointer-events: none;
-    z-index: 100;
-    animation: confetti-fall 3s linear forwards;
-  }
-  @keyframes confetti-fall {
-    0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(800px) rotate(720deg); opacity: 0; }
-  }
+input {
+  padding: 12px;
+  width: 280px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
 
-  /* Certificate */
-  .certificate-wrapper {
-    perspective: 1500px;
-  }
-  .certificate {
-    background:
-      linear-gradient(135deg, #fffef7 0%, #fef9e7 100%);
-    position: relative;
-    overflow: hidden;
-    box-shadow:
-      0 30px 80px rgba(0,0,0,0.5),
-      0 0 0 1px rgba(251, 191, 36, 0.3);
-    animation: cert-enter 1s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  @keyframes cert-enter {
-    0% { opacity: 0; transform: rotateX(15deg) translateY(40px) scale(0.9); }
-    100% { opacity: 1; transform: rotateX(0) translateY(0) scale(1); }
-  }
+button {
+  padding: 12px 20px;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
-  .certificate::before {
-    content: '';
-    position: absolute;
-    inset: 15px;
-    border: 2px solid #c9a227;
-    pointer-events: none;
-  }
-  .certificate::after {
-    content: '';
-    position: absolute;
-    inset: 22px;
-    border: 1px solid #c9a227;
-    pointer-events: none;
-  }
+.hidden { display: none; }
 
-  .cert-corner {
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    color: #c9a227;
-    opacity: 0.6;
-  }
+.certificate {
+  width: 95%;
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+  border: 5px solid gold;
+  background: white;
+}
 
-  .gold-shimmer {
-    background: linear-gradient(90deg, #8b6914 0%, #d4af37 25%, #f4e27c 50%, #d4af37 75%, #8b6914 100%);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shimmer 3s linear infinite;
-  }
-  @keyframes shimmer {
-    to { background-position: 200% center; }
-  }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  .seal {
-    animation: seal-stamp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.6s backwards;
-  }
-  @keyframes seal-stamp {
-    0% { opacity: 0; transform: scale(3) rotate(-30deg); }
-    60% { opacity: 1; transform: scale(0.9) rotate(5deg); }
-    100% { opacity: 1; transform: scale(1) rotate(0); }
-  }
+.header img {
+  width: 80px;
+}
 
-  .seal-ring {
-    animation: seal-spin 20s linear infinite;
-    transform-origin: center;
-  }
-  @keyframes seal-spin {
-    to { transform: rotate(360deg); }
-  }
+.video-container video {
+  width: 90%;
+  border-radius: 10px;
+}
 
-  /* Loading video screen */
-  .loading-ring {
-    display: inline-block;
-    width: 80px;
-    height: 80px;
-    border: 4px solid rgba(251, 191, 36, 0.2);
-    border-top-color: #fbbf24;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .video-placeholder {
-    background:
-      linear-gradient(135deg, #0a1628 0%, #1e3a5f 100%);
-    position: relative;
-    overflow: hidden;
-  }
-  .video-placeholder::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.15) 0%, transparent 60%);
-  }
-
-  .memory-fade {
-    animation: memoryFade 4s ease-in-out infinite;
-  }
-  @keyframes memoryFade {
-    0%, 100% { opacity: 0; transform: scale(0.95); }
-    20%, 80% { opacity: 1; transform: scale(1); }
-  }
-
-  .progress-bar {
-    animation: progress 5s linear forwards;
-  }
-  @keyframes progress {
-    from { width: 0%; }
-    to { width: 100%; }
-  }
-
-  /* Input focus effect */
-  .input-field:focus {
-    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3);
-  }
-
-  /* Entry animation */
-  .fade-in-up {
-    animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards;
-  }
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .delay-1 { animation-delay: 0.1s; }
-  .delay-2 { animation-delay: 0.2s; }
-  .delay-3 { animation-delay: 0.3s; }
-  .delay-4 { animation-delay: 0.4s; }
-
-  /* Button */
-  .btn-primary {
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
-  }
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 40px rgba(251, 191, 36, 0.5);
-  }
-  .btn-primary:active { transform: translateY(0); }
-
-  /* Shake animation for errors */
-  .shake { animation: shake 0.5s; }
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    75% { transform: translateX(10px); }
-  }
-
-  /* Status badge */
-  .status-badge {
-    animation: statusPop 0.6s cubic-bezier(0.22, 1, 0.36, 1) 1s backwards;
-  }
-  @keyframes statusPop {
-    0% { opacity: 0; transform: scale(0.5); }
-    60% { transform: scale(1.1); }
-    100% { opacity: 1; transform: scale(1); }
-  }
-
-  /* Hide */
-  .hidden-view { display: none !important; }
+h2, h3, p {
+  margin: 5px;
+}
 </style>
-  <style>body { box-sizing: border-box; }</style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
- <body class="h-full w-full">
-  <div class="bg-pattern"></div>
-  <div class="floating-orb" style="width:400px;height:400px;background:#fbbf24;top:-100px;left:-100px;"></div>
-  <div class="floating-orb" style="width:500px;height:500px;background:#3b82f6;bottom:-150px;right:-150px;animation-delay:2s;"></div>
-  <main class="relative h-full w-full overflow-auto">
-   <!-- INPUT SCREEN -->
-   <section id="inputScreen" class="min-h-full w-full flex items-center justify-center p-6">
-    <div class="w-full max-w-2xl">
-     <!-- School header -->
-     <div class="text-center mb-10 fade-in-up">
-      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-5" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);box-shadow:0 10px 40px rgba(251,191,36,0.4);">
-       <i data-lucide="graduation-cap" style="width:40px;height:40px;color:#0a1628;"></i>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- LOGIN -->
+<div id="login">
+  <h2>Pengumuman Kelulusan</h2>
+  <input type="text" id="nomor" placeholder="Masukkan Nomor Peserta">
+  <br><br>
+  <button onclick="cekKelulusan()">Cek Kelulusan</button>
+  <p id="error" style="color:red;" class="hidden">Nomor tidak ditemukan!</p>
+</div>
+
+<!-- VIDEO -->
+<div id="videoPage" class="hidden">
+  <h3>Perjalanan Anda di Sekolah</h3>
+  <div class="video-container">
+    <video id="video" controls autoplay>
+      <source src="video.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+<!-- HASIL -->
+<div id="hasil" class="hidden">
+  <div class="certificate" id="sertifikat">
+
+    <div class="header">
+      <img src="logo-provinsi.png">
+      <div>
+        <h3>PEMERINTAH PROVINSI MALUKU</h3>
+        <h3>DINAS PENDIDIKAN DAN KEBUDAYAAN</h3>
+        <h2>SMK NEGERI 10 SERAM BAGIAN BARAT</h2>
       </div>
-      <p id="provinceLabel" class="text-amber-300/80 text-sm md:text-base tracking-[0.3em] font-semibold mb-2">PEMERINTAH PROVINSI MALUKU</p>
-      <p id="departmentLabel" class="text-amber-300/60 text-sm md:text-base tracking-[0.2em] mb-1">DINAS PENDIDIKAN DAN KEBUDAYAAN</p>
-      <p id="schoolLabel" class="text-white text-sm tracking-[0.15em] font-semibold">SMK NEGERI 10 SERAM BAGIAN BARAT</p>
-     </div><!-- Main Card -->
-     <div class="fade-in-up delay-2 rounded-3xl p-10 md:p-12 text-center" style="background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid rgba(251,191,36,0.2);box-shadow:0 30px 80px rgba(0,0,0,0.4);">
-      <h1 id="mainTitle" class="serif text-4xl md:text-5xl font-bold mb-3 gold-shimmer leading-tight">PENGUMUMAN KELULUSAN</h1>
-      <p id="subtitleText" class="classic text-xl text-amber-200/90 italic mb-10">Tahun Pelajaran 2024/2025</p>
-      <div class="space-y-5 max-w-md mx-auto">
-       <label for="nomorUjian" class="block text-white/80 text-sm font-medium">Masukkan Nomor Peserta Ujian</label>
-       <div class="relative">
-        <i data-lucide="key-round" class="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400" style="width:20px;height:20px;"></i> <input type="text" id="nomorUjian" class="input-field w-full pl-12 pr-4 py-4 rounded-xl text-white text-center text-lg font-semibold tracking-wider outline-none transition-all" style="background:rgba(0,0,0,0.3);border:2px solid rgba(251,191,36,0.3);" placeholder="Contoh: -8" autocomplete="off">
-       </div><button id="verifyBtn" class="btn-primary w-full py-4 rounded-xl font-bold text-slate-900 text-lg flex items-center justify-center gap-2"> <i data-lucide="check" style="width:20px;height:20px;"></i> <span>Verifikasi</span> </button>
-       <div id="verifyErrorMsg" class="hidden-view flex items-center justify-center gap-2 text-red-300 text-sm p-3 rounded-lg" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);">
-        <i data-lucide="alert-circle" style="width:18px;height:18px;"></i> <span>Nomor ujian tidak valid. Silakan periksa kembali.</span>
-       </div>
-      </div>
-     </div><!-- Footer info -->
-     <div class="fade-in-up delay-3 text-center mt-8 text-white/40 text-xs">
-      <p>© 2025 — Sistem Pengumuman Kelulusan Resmi</p>
-     </div>
+      <img src="logo-sekolah.png">
     </div>
-   </section><!-- PARTICIPANT NUMBER SCREEN -->
-   <section id="participantScreen" class="hidden-view min-h-full w-full flex items-center justify-center p-6">
-    <div class="w-full max-w-2xl">
-     <!-- School header -->
-     <div class="text-center mb-10 fade-in-up">
-      <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-5" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);box-shadow:0 10px 40px rgba(251,191,36,0.4);">
-       <i data-lucide="graduation-cap" style="width:40px;height:40px;color:#0a1628;"></i>
-      </div>
-      <p id="provinceLabel2" class="text-amber-300/80 text-sm md:text-base tracking-[0.3em] font-semibold mb-2">PEMERINTAH PROVINSI MALUKU</p>
-      <p id="departmentLabel2" class="text-amber-300/60 text-sm md:text-base tracking-[0.2em] mb-1">DINAS PENDIDIKAN DAN KEBUDAYAAN</p>
-      <p id="schoolLabel2" class="text-white text-sm tracking-[0.15em] font-semibold">SMK NEGERI 10 SERAM BAGIAN BARAT</p>
-     </div><!-- Main Card -->
-     <div class="fade-in-up delay-2 rounded-3xl p-10 md:p-12 text-center" style="background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid rgba(251,191,36,0.2);box-shadow:0 30px 80px rgba(0,0,0,0.4);">
-      <h1 id="mainTitle2" class="serif text-4xl md:text-5xl font-bold mb-3 gold-shimmer leading-tight">PENGUMUMAN KELULUSAN</h1>
-      <p id="subtitleText2" class="classic text-xl text-amber-200/90 italic mb-10">Tahun Pelajaran 2024/2025</p>
-      <div class="space-y-5 max-w-md mx-auto">
-       <label for="nomor" id="inputPromptLabel" class="block text-white/80 text-sm font-medium">Masukkan Nomor Peserta Anda</label>
-       <div class="relative">
-        <i data-lucide="key-round" class="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400" style="width:20px;height:20px;"></i> <input type="text" id="nomor" class="input-field w-full pl-12 pr-4 py-4 rounded-xl text-white text-center text-lg font-semibold tracking-wider outline-none transition-all" style="background:rgba(0,0,0,0.3);border:2px solid rgba(251,191,36,0.3);" placeholder="Contoh: 1-34" autocomplete="off">
-       </div><button id="checkBtn" class="btn-primary w-full py-4 rounded-xl font-bold text-slate-900 text-lg flex items-center justify-center gap-2"> <i data-lucide="search" style="width:20px;height:20px;"></i> <span>Cek Kelulusan</span> </button>
-       <div id="errorMsg" class="hidden-view flex items-center justify-center gap-2 text-red-300 text-sm p-3 rounded-lg" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);">
-        <i data-lucide="alert-circle" style="width:18px;height:18px;"></i> <span>Nomor peserta tidak ditemukan. Silakan periksa kembali.</span>
-       </div><button id="backToVerifyBtn" class="w-full py-3 rounded-xl font-semibold text-white transition-all" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);"> <i data-lucide="arrow-left" style="width:18px;height:18px;display:inline;margin-right:8px;"></i> <span>Kembali</span> </button>
-      </div>
-     </div><!-- Footer info -->
-     <div class="fade-in-up delay-3 text-center mt-8 text-white/40 text-xs">
-      <p>© 2025 — Sistem Pengumuman Kelulusan Resmi</p>
-     </div>
-    </div>
-   </section><!-- VIDEO / JOURNEY SCREEN -->
-   <section id="videoScreen" class="hidden-view min-h-full w-full flex items-center justify-center p-6">
-    <div class="w-full max-w-4xl text-center">
-     <div class="fade-in-up mb-8">
-      <p class="text-amber-300/80 text-sm tracking-[0.3em] font-semibold mb-3">MOMEN KENANGAN</p>
-      <h2 class="serif text-4xl md:text-5xl font-bold text-white mb-3">Perjalanan Anda di Sekolah</h2>
-      <p class="classic text-xl text-amber-200/80 italic">Mengenang setiap langkah yang telah ditempuh...</p>
-     </div><!-- Video Player Placeholder -->
-     <div class="video-placeholder rounded-2xl aspect-video flex items-center justify-center relative fade-in-up delay-2" style="border:2px solid rgba(251,191,36,0.3);box-shadow:0 30px 80px rgba(0,0,0,0.5);">
-      <div class="relative z-10 text-center px-8">
-       <!-- Rotating memory icons -->
-       <div class="relative w-32 h-32 mx-auto mb-6">
-        <div class="absolute inset-0 flex items-center justify-center memory-fade" style="animation-delay:0s;">
-         <i data-lucide="book-open" style="width:64px;height:64px;color:#fbbf24;"></i>
-        </div>
-        <div class="absolute inset-0 flex items-center justify-center memory-fade" style="animation-delay:1s;">
-         <i data-lucide="users" style="width:64px;height:64px;color:#fbbf24;"></i>
-        </div>
-        <div class="absolute inset-0 flex items-center justify-center memory-fade" style="animation-delay:2s;">
-         <i data-lucide="trophy" style="width:64px;height:64px;color:#fbbf24;"></i>
-        </div>
-        <div class="absolute inset-0 flex items-center justify-center memory-fade" style="animation-delay:3s;">
-         <i data-lucide="heart" style="width:64px;height:64px;color:#fbbf24;"></i>
-        </div>
-       </div>
-       <div class="loading-ring mx-auto mb-6"></div>
-       <p class="text-white/80 text-lg mb-2">Memutar perjalanan Anda...</p>
-       <p class="text-white/50 text-sm">Mohon tunggu sebentar</p>
-      </div>
-     </div><!-- Progress -->
-     <div class="mt-8 max-w-md mx-auto fade-in-up delay-3">
-      <div class="h-1.5 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.1);">
-       <div id="progressBar" class="h-full rounded-full" style="background:linear-gradient(90deg,#fbbf24,#f59e0b);"></div>
-      </div>
-      <p class="text-white/60 text-xs mt-3">Hasil akan ditampilkan setelah pemutaran selesai</p>
-     </div>
-    </div>
-   </section><!-- RESULT / CERTIFICATE SCREEN -->
-   <section id="resultScreen" class="hidden-view min-h-full w-full flex items-center justify-center p-4 md:p-8">
-    <div class="w-full max-w-4xl">
-     <div class="certificate-wrapper">
-      <div class="certificate rounded-lg p-8 md:p-14 relative">
-       <!-- Decorative corners -->
-       <svg class="cert-corner" style="top:15px;left:15px;" viewbox="0 0 80 80" fill="none">
-        <path d="M5 5 L5 35 M5 5 L35 5" stroke="currentColor" stroke-width="1" /> <circle cx="5" cy="5" r="3" fill="currentColor" /> <path d="M15 15 Q30 15 30 30" stroke="currentColor" stroke-width="0.5" fill="none" />
-       </svg>
-       <svg class="cert-corner" style="top:15px;right:15px;transform:scaleX(-1);" viewbox="0 0 80 80" fill="none">
-        <path d="M5 5 L5 35 M5 5 L35 5" stroke="currentColor" stroke-width="1" /> <circle cx="5" cy="5" r="3" fill="currentColor" /> <path d="M15 15 Q30 15 30 30" stroke="currentColor" stroke-width="0.5" fill="none" />
-       </svg>
-       <svg class="cert-corner" style="bottom:15px;left:15px;transform:scaleY(-1);" viewbox="0 0 80 80" fill="none">
-        <path d="M5 5 L5 35 M5 5 L35 5" stroke="currentColor" stroke-width="1" /> <circle cx="5" cy="5" r="3" fill="currentColor" /> <path d="M15 15 Q30 15 30 30" stroke="currentColor" stroke-width="0.5" fill="none" />
-       </svg>
-       <svg class="cert-corner" style="bottom:15px;right:15px;transform:scale(-1,-1);" viewbox="0 0 80 80" fill="none">
-        <path d="M5 5 L5 35 M5 5 L35 5" stroke="currentColor" stroke-width="1" /> <circle cx="5" cy="5" r="3" fill="currentColor" /> <path d="M15 15 Q30 15 30 30" stroke="currentColor" stroke-width="0.5" fill="none" />
-       </svg><!-- Header with emblem -->
-       <div class="text-center relative z-10">
-        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full mb-4" style="background:linear-gradient(135deg,#d4af37,#8b6914);box-shadow:0 8px 20px rgba(139,105,20,0.4);">
-         <i data-lucide="landmark" style="width:40px;height:40px;color:#fffef7;"></i>
-        </div>
-        <p id="certProvince" class="text-xs md:text-sm tracking-[0.25em] font-bold" style="color:#8b6914;">PEMERINTAH PROVINSI MALUKU</p>
-        <p id="certDepartment" class="text-xs md:text-sm tracking-[0.2em] font-semibold mt-1" style="color:#8b6914;">DINAS PENDIDIKAN DAN KEBUDAYAAN</p>
-        <p id="certSchool" class="text-sm md:text-base tracking-[0.15em] font-bold mt-1" style="color:#1e3a5f;">SMK NEGERI 10 SERAM BAGIAN BARAT</p>
-        <div class="flex items-center justify-center gap-3 my-5">
-         <div class="h-px w-16 md:w-24" style="background:linear-gradient(90deg,transparent,#c9a227);"></div><i data-lucide="star" style="width:14px;height:14px;color:#c9a227;fill:#c9a227;"></i>
-         <div class="h-px w-16 md:w-24" style="background:linear-gradient(90deg,#c9a227,transparent);"></div>
-        </div>
-        <h2 id="certTitle" class="serif text-3xl md:text-5xl font-bold gold-shimmer mb-2">SERTIFIKAT KELULUSAN</h2>
-        <p class="classic text-base md:text-lg italic" style="color:#8b6914;">Certificate of Graduation</p>
-        <p class="text-xs md:text-sm tracking-[0.1em] mt-3 mb-6" style="color:#8b6914;">Nomor : 421.5/SK.69a/V/2026</p>
-        <div class="my-8 md:my-10">
-         <p class="classic text-base md:text-lg mb-2" style="color:#64748b;">Dengan bangga diberikan kepada</p>
-         <h3 id="nama" class="serif text-3xl md:text-5xl font-bold my-4" style="color:#1e3a5f;letter-spacing:0.02em;">—</h3>
-         <div class="flex items-center justify-center gap-3">
-          <div class="h-px w-12" style="background:#c9a227;"></div>
-          <p class="text-sm font-semibold tracking-[0.2em]" style="color:#8b6914;">NOMOR PESERTA: <span id="noPeserta">—</span></p>
-          <div class="h-px w-12" style="background:#c9a227;"></div>
-         </div>
-        </div>
-        <p class="text-xs md:text-sm tracking-[0.1em] mb-4" style="color:#8b6914;">SK No. 421.5/SK.69a/V/2026</p>
-        <p class="classic text-base md:text-lg max-w-xl mx-auto leading-relaxed" style="color:#475569;">Dinyatakan <span class="font-bold" style="color:#1e3a5f;">TELAH MEMENUHI</span> seluruh persyaratan kelulusan pada :</p><!-- Specialization display -->
-        <div class="my-6 p-4 rounded-lg" style="background:rgba(30,58,95,0.08);border:1px solid rgba(201,162,39,0.3);">
-         <p class="text-xs md:text-sm tracking-[0.15em] font-semibold mb-2" style="color:#8b6914;">KONSENTRASI KEAHLIAN</p>
-         <p id="konsentrasi" class="classic text-lg md:text-xl font-semibold" style="color:#1e3a5f;">—</p>
-        </div><!-- Status Badge -->
-        <div id="statusContainer" class="status-badge my-8 flex justify-center">
-         <div id="statusBadge" class="inline-flex items-center gap-3 px-8 md:px-12 py-4 rounded-full" style="background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 15px 40px rgba(16,185,129,0.4);">
-          <i id="statusIcon" data-lucide="check-circle-2" style="width:32px;height:32px;color:white;"></i> <span id="status" class="serif text-2xl md:text-4xl font-bold text-white tracking-wider">LULUS</span>
-         </div>
-        </div><!-- Signature section -->
-        <div class="mt-12 md:mt-16 grid grid-cols-2 gap-8 max-w-3xl mx-auto">
-         <div class="text-center">
-          <p class="text-xs md:text-sm mb-6" style="color:#475569;">Piru, <span id="certDate"></span></p>
-          <div class="mb-10 h-24 border-b-2" style="border-color:#c9a227;"></div>
-          <p class="classic italic text-lg" style="color:#1e3a5f;">Kepala Sekolah</p>
-          <div class="h-px my-3" style="background:#c9a227;"></div>
-          <p id="headmasterName" class="text-xs font-semibold" style="color:#1e3a5f;">LENNY. Chr. RISAKOTTA, S.Pd., M.Pd</p>
-          <p id="headmasterNIP" class="text-xs" style="color:#8b6914;">NIP. 19610320 198803 2 003</p>
-         </div><!-- Official Seal -->
-         <div class="text-center flex flex-col items-center justify-center">
-          <div class="seal relative w-36 h-36 md:w-44 md:h-44">
-           <svg class="seal-ring absolute inset-0" viewbox="0 0 100 100">
-            <defs>
-             <path id="circle" d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0" />
-            </defs> <circle cx="50" cy="50" r="45" fill="none" stroke="#c9a227" stroke-width="1.5" /> <circle cx="50" cy="50" r="40" fill="none" stroke="#c9a227" stroke-width="0.5" /> <text fill="#8b6914" font-size="7" font-weight="bold" letter-spacing="2">
-             <textpath href="#circle">
-              • SMK NEGERI 10 SBB • PROVINSI MALUKU •
-             </textpath>
-            </text>
-           </svg>
-           <div class="absolute inset-0 flex items-center justify-center">
-            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center" style="background:radial-gradient(circle,#fef3c7,#fde68a);border:3px solid #c9a227;box-shadow:0 8px 24px rgba(139,105,20,0.3);">
-             <i data-lucide="award" style="width:48px;height:48px;color:#8b6914;"></i>
-            </div>
-           </div>
-          </div>
-          <p class="text-xs font-semibold mt-4" style="color:#8b6914;">Cap Sekolah Resmi</p>
-         </div>
-        </div>
-       </div>
-      </div>
-     </div><!-- Actions -->
-     <div class="flex flex-col sm:flex-row gap-3 justify-center mt-8 fade-in-up delay-3">
-      <button id="printBtn" class="px-6 py-3 rounded-xl font-semibold text-slate-900 flex items-center justify-center gap-2 btn-primary"> <i data-lucide="printer" style="width:18px;height:18px;"></i> <span>Cetak Sertifikat</span> </button> <button id="backBtn" class="px-6 py-3 rounded-xl font-semibold text-white flex items-center justify-center gap-2 transition-all" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);"> <i data-lucide="arrow-left" style="width:18px;height:18px;"></i> <span>Cek Nomor Lain</span> </button>
-     </div>
-    </div>
-   </section>
-  </main>
-  <script>
-// Student data indexed by name
+
+    <hr>
+
+    <h2>SERTIFIKAT KELULUSAN</h2>
+
+    <p>Nama:</p>
+    <h2 id="nama"></h2>
+
+    <p>Nomor Peserta:</p>
+    <h3 id="noPeserta"></h3>
+
+    <p>Konsentrasi Keahlian:</p>
+    <h3 id="jurusan"></h3>
+
+    <h2 style="color:green;">LULUS</h2>
+
+    <br><br>
+
+    <p>Kepala Sekolah</p>
+    <br>
+    <img src="ttd.png" width="150"><br>
+    <b>LENNY. Chr. RISAKOTTA, S.Pd., M.Pd</b><br>
+    NIP: 196703181999032005
+
+  </div>
+
+  <br>
+  <button onclick="downloadPDF()">Download PDF</button>
+</div>
+
+</div>
+
+<!-- LIBRARY PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+
+// DATA SISWA
 const dataSiswa = {
-  "26210801130018": {nama: "Amanda Wuritimur", konsentrasi: "Layanan Kesehatan dan Care Giver", status: "LULUS"},
-  "26210801130027": {nama: "David L Monaten", konsentrasi: "Layanan Kesehatan dan Care Giver", status: "LULUS"},
-  "26210801130036": {nama: "Fanasya Picaulima", konsentrasi: "Layanan Kesehatan dan Care Giver", status: "LULUS"},
-  "26210801130045": {nama: "Gabriella Juen.Gracya. Thenu", konsentrasi: "Layanan Kesehatan dan Care Giver", status: "LULUS"},
-  "26210801130054": {nama: "Indri Virgin Ratumarun", konsentrasi: "Layanan Kesehatan dan Care Giver", status: "LULUS"},
-  "26210801130063": {nama: "Juans Wildhom Kaya", konsentrasi: "Layanan Kesehatan dan Care Giver", status: "LULUS"},
-  "26210801130072": {nama: "Maria Egi. Kolau", konsentrasi: "Layanan Kesehatan dan Care Giver", status: "LULUS"},
-  "26210801130081": {nama: "Melinda Mandey", konsentrasi: "Layanan Kesehatan dan Care Giver", status: "LULUS"},
-  "26210801130099": {nama: "Mita Katalane", konsentrasi: "Layanan Kesehatan dan Care Giver", status: "LULUS"},
-  "262108011300108": {nama: "Silvi Puttilehalat", konsentrasi: "Layanan Kesehatan dan Care Giver", status: "LULUS"},
-  "262108011300117": {nama: "Velisya Frilly Ganggi", konsentrasi: "Layanan Kesehatan dan Care Giver", status: "LULUS"},
-  "262108011300126": {nama: "Cindy J Iraratu", konsentrasi: "Kebidanan", status: "LULUS"},
-  "262108011300135": {nama: "Jen Regin Mananue", konsentrasi: "Kebidanan", status: "LULUS"},
-  "262108011300144": {nama: "Nurlisa Ninilouw", konsentrasi: "Kebidanan", status: "LULUS"},
-  "262108011300153": {nama: "Rindi Ch Akollo", konsentrasi: "Kebidanan", status: "LULUS"},
-  "262108011300162": {nama: "Yulia Mawene", konsentrasi: "Kebidanan", status: "LULUS"},
-  "262108011300171": {nama: "Cintaria Jean Sitania", konsentrasi: "Farmasi Klinis dan Komunitas", status: "LULUS"},
-  "262108011300189": {nama: "Heavenly Julianty Kakihary", konsentrasi: "Farmasi Klinis dan Komunitas", status: "LULUS"},
-  "262108011300198": {nama: "Mariel Daniello Madabaafu", konsentrasi: "Farmasi Klinis dan Komunitas", status: "LULUS"},
-  "262108011300207": {nama: "Rian Grasio Beo", konsentrasi: "Farmasi Klinis dan Komunitas", status: "LULUS"},
-  "262108011300216": {nama: "Ryan M Nunuela", konsentrasi: "Farmasi Klinis dan Komunitas", status: "LULUS"},
-  "262108011300225": {nama: "Andira Henaulu", konsentrasi: "Rekayasa Perangkat Lunak", status: "LULUS"},
-  "262108011300234": {nama: "Arlin Blenda Ririhena", konsentrasi: "Rekayasa Perangkat Lunak", status: "LULUS"},
-  "262108011300243": {nama: "Avenly Nimsy Elly", konsentrasi: "Rekayasa Perangkat Lunak", status: "LULUS"},
-  "262108011300252": {nama: "Azriel Crisye Lewerissa", konsentrasi: "Rekayasa Perangkat Lunak", status: "LULUS"},
-  "262108011300261": {nama: "Billy Rifly Muskitta", konsentrasi: "Rekayasa Perangkat Lunak", status: "LULUS"},
-  "262108011300279": {nama: "Donrian Kolway", konsentrasi: "Rekayasa Perangkat Lunak", status: "LULUS"},
-  "262108011300288": {nama: "Farlan Niay", konsentrasi: "Rekayasa Perangkat Lunak", status: "LULUS"},
-  "262108011300297": {nama: "Heldi Menda Nuruwe", konsentrasi: "Rekayasa Perangkat Lunak", status: "LULUS"},
-  "262108011300306": {nama: "Mei Grarie Seay", konsentrasi: "Rekayasa Perangkat Lunak", status: "LULUS"},
-  "262108011300315": {nama: "Meilani Birahy", konsentrasi: "Rekayasa Perangkat Lunak", status: "LULUS"},
-  "262108011300324": {nama: "Raditya Maitimu", konsentrasi: "Rekayasa Perangkat Lunak", status: "LULUS"},
-  "262108011300333": {nama: "Risvilga ralahalu", konsentrasi: "Rekayasa Perangkat Lunak", status: "LULUS"},
-  "262108011300342": {nama: "Samson Konoralma", konsentrasi: "Rekayasa Perangkat Lunak", status: "LULUS"}
+  "26210801130018": { nama: "Amanda Wuritimur", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "26210801130027": { nama: "David L Monaten", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "26210801130036": { nama: "Fanasya Picaulima", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "26210801130045": { nama: "Gabriella Juen Gracya Thenu", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "26210801130054": { nama: "Indri Virgin Ratumarun", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "26210801130063": { nama: "Juans Wildhom Kaya", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "26210801130072": { nama: "Maria Egi Kolau", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "26210801130081": { nama: "Melinda Mandey", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "26210801130099": { nama: "Mita Katalane", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300108": { nama: "Silvi Puttilehalat", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300117": { nama: "Velisya Frilly Ganggi", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300126": { nama: "Cindy J Iraratu", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300135": { nama: "Jen Regin Mananue", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300144": { nama: "Nurlisa Ninilouw", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300153": { nama: "Rindi Ch Akollo", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300162": { nama: "Yulia Mawene", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300171": { nama: "Cintaria Jean Sitania", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300189": { nama: "Heavenly Julianty Kakihary", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300198": { nama: "Mariel Daniello Madabaafu", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300207": { nama: "Rian Grasio Beo", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300216": { nama: "Ryan M Nunuela", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300225": { nama: "Andira Henaulu", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300234": { nama: "Arlin Blenda Ririhena", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300243": { nama: "Avenly Nimsy Elly", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300252": { nama: "Azriel Crisye Lewerissa", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300261": { nama: "Billy Rifly Muskitta", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300279": { nama: "Donrian Kolway", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300288": { nama: "Farlan Niay", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300297": { nama: "Heldi Menda Nuruwe", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300306": { nama: "Mei Grarie Seay", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300315": { nama: "Meilani Birahy", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300324": { nama: "Raditya Maitimu", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300333": { nama: "Risvilga Ralahalu", konsentrasi: "Teknik Komputer dan Jaringan" },
+  "262108011300342": { nama: "Samson Konoralma", konsentrasi: "Teknik Komputer dan Jaringan" }
 };
 
-// Function to find student by name (case-insensitive, normalize dots and spaces)
-function cariSiswa(nama) {
-  const normalize = (str) => str.toLowerCase().replace(/\./g, '').replace(/\s+/g, ' ').trim();
-  const normalizedInput = normalize(nama);
-  return dataSiswa.find(s => normalize(s.nama) === normalizedInput);
-}
-
-// Element SDK setup
-const defaultConfig = {
-  province_name: "PEMERINTAH PROVINSI MALUKU",
-  department_name: "DINAS PENDIDIKAN DAN KEBUDAYAAN",
-  school_name: "SMK NEGERI 10 SERAM BAGIAN BARAT",
-  main_title: "PENGUMUMAN KELULUSAN",
-  subtitle: "Tahun Pelajaran 2024/2025",
-  input_prompt: "Masukkan Nomor Peserta Anda",
-  certificate_title: "SERTIFIKAT KELULUSAN",
-  headmaster_name: "LENNY. Chr. RISAKOTTA, S.Pd., M.Pd",
-  headmaster_nip: "19610320 198803 2 003"
-};
-
-const element = {
-  defaultConfig,
-  onConfigChange: async (config) => {
-    const c = { ...defaultConfig, ...config };
-    document.getElementById('provinceLabel').textContent = c.province_name;
-    document.getElementById('departmentLabel').textContent = c.department_name;
-    document.getElementById('schoolLabel').textContent = c.school_name;
-    document.getElementById('mainTitle').textContent = c.main_title;
-    document.getElementById('subtitleText').textContent = c.subtitle;
-    document.getElementById('inputPromptLabel').textContent = c.input_prompt;
-    document.getElementById('certProvince').textContent = c.province_name;
-    document.getElementById('certDepartment').textContent = c.department_name;
-    document.getElementById('certSchool').textContent = c.school_name;
-    document.getElementById('certTitle').textContent = c.certificate_title;
-    document.getElementById('headmasterName').textContent = c.headmaster_name;
-    document.getElementById('headmasterNIP').textContent = "NIP. " + c.headmaster_nip;
-  },
-  mapToCapabilities: () => ({
-    recolorables: [],
-    borderables: [],
-    fontEditable: undefined,
-    fontSizeable: undefined
-  }),
-  mapToEditPanelValues: (config) => {
-    const c = { ...defaultConfig, ...config };
-    return new Map([
-      ["province_name", c.province_name],
-      ["department_name", c.department_name],
-      ["school_name", c.school_name],
-      ["main_title", c.main_title],
-      ["subtitle", c.subtitle],
-      ["input_prompt", c.input_prompt],
-      ["certificate_title", c.certificate_title],
-      ["headmaster_name", c.headmaster_name],
-      ["headmaster_nip", c.headmaster_nip]
-    ]);
-  }
-};
-
-if (window.elementSdk) {
-  window.elementSdk.init(element);
-}
-
-// Screens
-const inputScreen = document.getElementById('inputScreen');
-const participantScreen = document.getElementById('participantScreen');
-const videoScreen = document.getElementById('videoScreen');
-const resultScreen = document.getElementById('resultScreen');
-const verifyErrorMsg = document.getElementById('verifyErrorMsg');
-const errorMsg = document.getElementById('errorMsg');
-const nomorUjianField = document.getElementById('nomorUjian');
-const inputField = document.getElementById('nomor');
-const verifyBtn = document.getElementById('verifyBtn');
-const checkBtn = document.getElementById('checkBtn');
-
-function showScreen(screen) {
-  [inputScreen, participantScreen, videoScreen, resultScreen].forEach(s => s.classList.add('hidden-view'));
-  screen.classList.remove('hidden-view');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// Update participant screen labels
-function updateParticipantScreenLabels() {
-  const c = window.elementSdk ? window.elementSdk.config : defaultConfig;
-  document.getElementById('provinceLabel2').textContent = c.province_name || defaultConfig.province_name;
-  document.getElementById('departmentLabel2').textContent = c.department_name || defaultConfig.department_name;
-  document.getElementById('schoolLabel2').textContent = c.school_name || defaultConfig.school_name;
-  document.getElementById('mainTitle2').textContent = c.main_title || defaultConfig.main_title;
-  document.getElementById('subtitleText2').textContent = c.subtitle || defaultConfig.subtitle;
-}
-
-function verifyExamNumber() {
-  const nomorUjian = nomorUjianField.value.trim();
-  verifyErrorMsg.classList.add('hidden-view');
-
-  const siswa = cariSiswa(nomorUjian);
-  if (siswa) {
-    updateParticipantScreenLabels();
-    showScreen(participantScreen);
-    nomorUjianField.value = '';
-  } else {
-    verifyErrorMsg.classList.remove('hidden-view');
-    nomorUjianField.classList.add('shake');
-    setTimeout(() => nomorUjianField.classList.remove('shake'), 500);
-  }
-}
-
+// CEK KELULUSAN
 function cekKelulusan() {
-  const nama = inputField.value.trim();
-  errorMsg.classList.add('hidden-view');
+  let input = document.getElementById("nomor").value;
+  let nomor = input.replace(/[^0-9]/g, "");
 
-  const siswa = cariSiswa(nama);
+  let siswa = dataSiswa[nomor];
+
   if (siswa) {
-    showScreen(videoScreen);
-    setTimeout(() => {
-      tampilkanHasil(siswa);
-    }, 5000);
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("videoPage").classList.remove("hidden");
+
+    let video = document.getElementById("video");
+
+    video.onended = function () {
+      document.getElementById("videoPage").classList.add("hidden");
+      document.getElementById("hasil").classList.remove("hidden");
+
+      document.getElementById("nama").innerText = siswa.nama;
+      document.getElementById("noPeserta").innerText = nomor;
+      document.getElementById("jurusan").innerText = siswa.konsentrasi;
+    };
+
   } else {
-    errorMsg.classList.remove('hidden-view');
-    inputField.classList.add('shake');
-    setTimeout(() => inputField.classList.remove('shake'), 500);
+    document.getElementById("error").classList.remove("hidden");
   }
 }
 
-function tampilkanHasil(siswa) {
-  document.getElementById('nama').textContent = siswa.nama;
-  document.getElementById('noPeserta').textContent = siswa.nama;
-  document.getElementById('konsentrasi').textContent = siswa.konsentrasi;
-  document.getElementById('status').textContent = siswa.status;
+// DOWNLOAD PDF
+function downloadPDF() {
+  const { jsPDF } = window.jspdf;
 
-  // Date in Indonesian format
-  const now = new Date();
-  const bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-  document.getElementById('certDate').textContent = `${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`;
+  html2canvas(document.getElementById("sertifikat")).then(canvas => {
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("landscape");
 
-  showScreen(resultScreen);
-  lucide.createIcons();
-
-  // Confetti for LULUS
-  if (siswa.status === 'LULUS') {
-    launchConfetti();
-  }
+    pdf.addImage(imgData, "PNG", 10, 10, 270, 180);
+    pdf.save("Sertifikat.pdf");
+  });
 }
 
-function launchConfetti() {
-  const colors = ['#fbbf24', '#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6'];
-  for (let i = 0; i < 80; i++) {
-    setTimeout(() => {
-      const c = document.createElement('div');
-      c.className = 'confetti';
-      c.style.left = Math.random() * 100 + '%';
-      c.style.top = '-20px';
-      c.style.background = colors[Math.floor(Math.random() * colors.length)];
-      c.style.animationDuration = (2 + Math.random() * 2) + 's';
-      c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-      c.style.width = (6 + Math.random() * 8) + 'px';
-      c.style.height = (6 + Math.random() * 8) + 'px';
-      document.body.appendChild(c);
-      setTimeout(() => c.remove(), 4000);
-    }, i * 30);
-  }
-}
+</script>
 
-// Event bindings
-verifyBtn.addEventListener('click', verifyExamNumber);
-nomorUjianField.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') verifyExamNumber();
-});
-
-checkBtn.addEventListener('click', cekKelulusan);
-inputField.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') cekKelulusan();
-});
-
-document.getElementById('backBtn').addEventListener('click', () => {
-  inputField.value = '';
-  showScreen(inputScreen);
-});
-
-document.getElementById('backToVerifyBtn').addEventListener('click', () => {
-  inputField.value = '';
-  showScreen(inputScreen);
-});
-
-document.getElementById('printBtn').addEventListener('click', () => {
-  window.print();
-});
-
-// Init icons
-lucide.createIcons();
-  </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f6424fff6f1aa7f',t:'MTc3Nzg2MjQ2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
